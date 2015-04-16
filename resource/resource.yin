@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:ietf:params:xml:ns:yang:yin:1" xmlns:resource="http://www.gsta.com/resource" name="resource">
+  <namespace uri="http://www.gsta.com/resource"/>
+  <prefix value="resource"/>
+  <organization>
+    <text>gsta</text>
+  </organization>
+  <contact>
+    <text>chen qianfeng &lt;jaydom912@126.com&gt;
+li peng &lt;lixiaozhu223@gmail.com&gt;</text>
+  </contact>
+  <description>
+    <text>YANG version of the RESOURCE-MIB.</text>
+  </description>
+  <revision date="2014-10-17">
+    <description>
+      <text>resource module in progress,collect os infomation.</text>
+    </description>
+  </revision>
+  <container name="resource">
+    <container name="CPUInfo">
+      <config value="false"/>
+      <description>
+        <text>collec cpu infomation from /proc/cpuinfo and collect cpu idle precent from /proc/stat </text>
+      </description>
+      <leaf name="ModelName">
+        <type name="string"/>
+        <description>
+          <text>the /proc/cpuinfo file  model_name line</text>
+        </description>
+      </leaf>
+      <leaf name="CPUMhz">
+        <type name="decimal64">
+          <fraction-digits value="2"/>
+        </type>
+        <description>
+          <text>the /proc/cpuinfo file  cpu_Mhz line</text>
+        </description>
+      </leaf>
+      <leaf name="CPUPhNum">
+        <type name="int32"/>
+        <description>
+          <text>the /proc/cpuinfo file  cpu cores line,repersent physical cores</text>
+        </description>
+      </leaf>
+      <leaf name="CPULoNum">
+        <type name="int32"/>
+        <description>
+          <text>the logical cores </text>
+        </description>
+      </leaf>
+      <leaf name="CpuIdlePrecent">
+        <type name="decimal64">
+          <fraction-digits value="2"/>
+        </type>
+        <description>
+          <text>from the /proc/stat file sleep 5 seconds 
+caculate by (idle new-idle old) /(total new -total old) </text>
+        </description>
+      </leaf>
+      <list name="CPUInfoNode">
+        <description>
+          <text>each logical core idle precent</text>
+        </description>
+        <leaf name="CPUNum">
+          <description>
+            <text>logical core num</text>
+          </description>
+          <type name="string"/>
+        </leaf>
+        <leaf name="CPUIdlePrecent">
+          <type name="decimal64">
+            <fraction-digits value="2"/>
+          </type>
+          <description>
+            <text>from the /proc/stat file sleep 5 seconds 
+caculate by (idle new-idle old) /(total new -total old) </text>
+          </description>
+        </leaf>
+      </list>
+    </container>
+    <container name="MemInfo">
+      <config value="false"/>
+      <description>
+        <text>the memory infomation from /proc/meminfo file</text>
+      </description>
+      <leaf name="MemTotal">
+        <description>
+          <text>total memory of the machine kB</text>
+        </description>
+        <type name="int64"/>
+      </leaf>
+      <leaf name="MemFree">
+        <description>
+          <text>free memory of the machine kB</text>
+        </description>
+        <type name="int64"/>
+      </leaf>
+      <leaf name="HugePagesTotal">
+        <description>
+          <text>total hugepages of the machine kB</text>
+        </description>
+        <type name="int64"/>
+      </leaf>
+      <leaf name="HugePagesFree">
+        <description>
+          <text>free hugepages of the machine kB</text>
+        </description>
+        <type name="int64"/>
+      </leaf>
+      <leaf name="HugePagesRsvd">
+        <description>
+          <text>HugePages_Rsvd of the machine kB</text>
+        </description>
+        <type name="int64"/>
+      </leaf>
+      <leaf name="HugePagesSurp">
+        <description>
+          <text>HugePages_Surp of the machine kB</text>
+        </description>
+        <type name="int64"/>
+      </leaf>
+      <leaf name="HugePageSize">
+        <description>
+          <text>Hugepagesize of the machine kB</text>
+        </description>
+        <type name="int64"/>
+      </leaf>
+    </container>
+    <container name="NetDevInfo">
+      <config value="false"/>
+      <description>
+        <text>the machine net device stat from /proc/dev/net and ioctl()</text>
+      </description>
+      <list name="NetDevInfoDetail">
+        <description>
+          <text>the each nic infomation</text>
+        </description>
+        <leaf name="DevName">
+          <type name="string"/>
+          <description>
+            <text>the nic name from /proc/dev/net </text>
+          </description>
+        </leaf>
+        <leaf name="MAC">
+          <type name="string"/>
+          <description>
+            <text>the mac addr from ioctl() </text>
+          </description>
+        </leaf>
+        <leaf name="IP">
+          <type name="string"/>
+          <description>
+            <text>the IP addr from ioctl() </text>
+          </description>
+        </leaf>
+        <leaf name="BroadIp">
+          <type name="string"/>
+          <description>
+            <text>the broadIp addr from ioctl() </text>
+          </description>
+        </leaf>
+        <leaf name="NetMask">
+          <type name="string"/>
+          <description>
+            <text>the netMask from ioctl() </text>
+          </description>
+        </leaf>
+        <leaf name="Txbytes">
+          <type name="int64"/>
+          <description>
+            <text>the Txbytes from /proc/dev/net </text>
+          </description>
+        </leaf>
+        <leaf name="Txpackets">
+          <type name="int64"/>
+          <description>
+            <text>the Txpackets from /proc/dev/net </text>
+          </description>
+        </leaf>
+        <leaf name="Txdrop">
+          <type name="int64"/>
+          <description>
+            <text>the Txdrop from /proc/dev/net </text>
+          </description>
+        </leaf>
+        <leaf name="Rxbytes">
+          <type name="int64"/>
+          <description>
+            <text>the Rxbytes from /proc/dev/net </text>
+          </description>
+        </leaf>
+        <leaf name="Rxpackets">
+          <type name="int64"/>
+          <description>
+            <text>the Rxpackets from /proc/dev/net </text>
+          </description>
+        </leaf>
+        <leaf name="Rxdrop">
+          <type name="int64"/>
+          <description>
+            <text>the Rxdrop from /proc/dev/net </text>
+          </description>
+        </leaf>
+      </list>
+    </container>
+    <container name="DiskInfo">
+      <config value="false"/>
+      <description>
+        <text>the disk used statu ,from statfs input path get the partition use statu ,default path is / /home /dev/shm /boot</text>
+      </description>
+      <list name="Partition">
+        <description>
+          <text>partition infomation</text>
+        </description>
+        <leaf name="Path">
+          <type name="string"/>
+          <description>
+            <text>get the partition infomation by this path</text>
+          </description>
+        </leaf>
+        <leaf name="Total">
+          <type name="int64"/>
+          <description>
+            <text>the partition total size MB</text>
+          </description>
+        </leaf>
+        <leaf name="Free">
+          <type name="int64"/>
+          <description>
+            <text>the partition free size MB</text>
+          </description>
+        </leaf>
+      </list>
+    </container>
+    <container name="VMInfo">
+      <config value="false"/>
+      <description>
+        <text>collect vm infomation from host.use ps qemu ,if use openstack use virsh</text>
+      </description>
+      <list name="VMInfoDetail">
+        <leaf name="VMName">
+          <type name="string"/>
+        </leaf>
+        <leaf name="VMUUID">
+          <type name="string"/>
+        </leaf>
+        <leaf name="VMMemInfo">
+          <type name="int32"/>
+        </leaf>
+        <leaf name="VMCPUCores">
+          <type name="int32"/>
+        </leaf>
+        <leaf name="VMVNC">
+          <type name="string"/>
+        </leaf>
+        <leaf name="VMPID">
+          <type name="int32"/>
+        </leaf>
+        <list name="VMNetDevInfo">
+          <leaf name="NetDevIfname">
+            <type name="string"/>
+          </leaf>
+          <leaf name="NetDevID">
+            <type name="string"/>
+          </leaf>
+          <leaf name="NetDevType">
+            <type name="string"/>
+          </leaf>
+          <leaf name="NetDevDeviceMAC">
+            <type name="string"/>
+          </leaf>
+          <leaf name="NetDevDeviceType">
+            <type name="string"/>
+          </leaf>
+        </list>
+      </list>
+    </container>
+    <container name="OVSInfo">
+      <config value="false"/>
+      <description>
+        <text>the ovs-ofctl &amp;&amp; ovs-vsctl get the ovs br and port infomation</text>
+      </description>
+      <list name="OVSBr">
+        <description>
+          <text>ovsbr info contain br-name port list</text>
+        </description>
+        <leaf name="BrName">
+          <type name="string"/>
+          <description>
+            <text>the ovs-br name</text>
+          </description>
+        </leaf>
+        <leaf name="PortTotalNum">
+          <type name="int32"/>
+          <description>
+            <text>the br total port num</text>
+          </description>
+        </leaf>
+        <list name="OVSPortlist">
+          <description>
+            <text>ovs port list contain tx rx port name ...</text>
+          </description>
+          <leaf name="PortName">
+            <type name="string"/>
+          </leaf>
+          <leaf name="PortSerailNo">
+            <description>
+              <text>portID</text>
+            </description>
+            <type name="int32"/>
+          </leaf>
+          <leaf name="MAC">
+            <type name="string"/>
+          </leaf>
+          <leaf name="Txpackets">
+            <type name="int64"/>
+          </leaf>
+          <leaf name="Txbytes">
+            <type name="int64"/>
+          </leaf>
+          <leaf name="Txdrop">
+            <type name="int64"/>
+          </leaf>
+          <leaf name="Rxpackets">
+            <type name="int64"/>
+          </leaf>
+          <leaf name="Rxbytes">
+            <type name="int64"/>
+          </leaf>
+          <leaf name="Rxdrop">
+            <type name="int64"/>
+          </leaf>
+        </list>
+      </list>
+    </container>
+    <container name="PIDInfo">
+      <config value="false"/>
+      <description>
+        <text>collect the qemu ovs dpdk pid info</text>
+      </description>
+      <container name="QemuPIDInfo">
+        <list name="QemuPIDInfoDetail">
+          <leaf name="QemuProgressName">
+            <type name="string"/>
+          </leaf>
+          <list name="LWPInfo">
+            <leaf name="LWP">
+              <type name="int32"/>
+            </leaf>
+            <leaf name="PID">
+              <type name="int32"/>
+            </leaf>
+            <leaf name="PSR">
+              <description>
+                <text>the lwp use which logical core </text>
+              </description>
+              <type name="int32"/>
+            </leaf>
+          </list>
+        </list>
+      </container>
+      <container name="VSwitchdLWPInfo">
+        <leaf name="VSwitchdProgressName">
+          <type name="string"/>
+        </leaf>
+        <list name="LWPInfo">
+          <leaf name="LWP">
+            <type name="int32"/>
+          </leaf>
+          <leaf name="PID">
+            <type name="int32"/>
+          </leaf>
+          <leaf name="PSR">
+            <description>
+              <text>the lwp use which logical core </text>
+            </description>
+            <type name="int32"/>
+          </leaf>
+        </list>
+      </container>
+      <container name="OVSDBLWPInfo">
+        <leaf name="OVSDBProgressName">
+          <type name="string"/>
+        </leaf>
+        <list name="LWPInfo">
+          <leaf name="LWP">
+            <type name="int32"/>
+          </leaf>
+          <leaf name="PID">
+            <type name="int32"/>
+          </leaf>
+          <leaf name="PSR">
+            <description>
+              <text>the lwp use which logical core </text>
+            </description>
+            <type name="int32"/>
+          </leaf>
+        </list>
+      </container>
+      <container name="DPDKLWPInfo">
+        <leaf name="DPDKProgressName">
+          <type name="string"/>
+        </leaf>
+        <list name="LWPInfo">
+          <leaf name="LWP">
+            <type name="int32"/>
+          </leaf>
+          <leaf name="PID">
+            <type name="int32"/>
+          </leaf>
+          <leaf name="PSR">
+            <description>
+              <text>the lwp use which logical core </text>
+            </description>
+            <type name="int32"/>
+          </leaf>
+        </list>
+      </container>
+    </container>
+  </container>
+</module>

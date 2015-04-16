@@ -1,0 +1,326 @@
+module resource{
+	namespace "http://www.gsta.com/resource";
+	prefix "resource";
+	organization  "gsta";
+
+	contact
+	"chen qianfeng <jaydom912@126.com>
+	 li peng <lixiaozhu223@gmail.com>";
+
+	description
+	"YANG version of the RESOURCE-MIB.";
+
+
+	revision 2014-10-17 {
+	description "resource module in progress,collect os infomation.";
+	}
+	container resource{
+	    container CPUInfo{
+		config false;
+		description "collec cpu infomation from /proc/cpuinfo and collect cpu idle precent from /proc/stat ";
+		leaf ModelName {
+		    type string;
+		    description "the /proc/cpuinfo file  model_name line";
+		}
+		leaf CPUMhz {
+		    type decimal64 {
+			fraction-digits 2;
+			}
+		    description "the /proc/cpuinfo file  cpu_Mhz line";
+		}
+		leaf CPUPhNum {
+		    type int32;
+		    description "the /proc/cpuinfo file  cpu cores line,repersent physical cores";
+		}
+		leaf CPULoNum {
+		    type int32;
+		    description "the logical cores ";
+		}
+		leaf CpuIdlePrecent{
+		    type decimal64 {
+			fraction-digits 2;
+			}
+		    description "from the /proc/stat file sleep 5 seconds 
+		             caculate by (idle new-idle old) /(total new -total old) ";
+		}
+		list CPUInfoNode{
+		    description "each logical core idle precent";
+		    leaf CPUNum{
+			description "logical core num";
+			type string;
+		    }
+		    leaf CPUIdlePrecent{
+		    type decimal64 {
+			fraction-digits 2;
+			}
+		    description "from the /proc/stat file sleep 5 seconds 
+		             caculate by (idle new-idle old) /(total new -total old) ";
+		    }
+		}
+	    }
+	    container MemInfo{
+		config false;
+		description "the memory infomation from /proc/meminfo file";
+		leaf MemTotal{
+		    description "total memory of the machine kB";
+		    type int64; 
+		}
+		leaf MemFree{
+		    description "free memory of the machine kB";
+		    type int64; 
+		}
+		leaf HugePagesTotal{
+		    description "total hugepages of the machine kB";
+		    type int64; 
+		}
+		leaf HugePagesFree{
+		    description "free hugepages of the machine kB";
+		    type int64; 
+		}
+		leaf HugePagesRsvd{
+		    description "HugePages_Rsvd of the machine kB";
+		    type int64; 
+		}
+		leaf HugePagesSurp{
+		    description "HugePages_Surp of the machine kB";
+		    type int64; 
+		}
+		leaf HugePageSize{
+		    description "Hugepagesize of the machine kB";
+		    type int64; 
+		}
+		
+	    }
+	    container NetDevInfo{
+		config false;
+		description "the machine net device stat from /proc/dev/net and ioctl()";
+		list NetDevInfoDetail{
+		    description "the each nic infomation";
+		    leaf DevName{
+			type string;
+			description "the nic name from /proc/dev/net ";
+		    }
+		    leaf MAC{
+			type string;
+			description "the mac addr from ioctl() ";
+		    }
+		    leaf IP{
+			type string;
+			description "the IP addr from ioctl() ";
+		    }
+		    leaf BroadIp{
+			type string;
+			description "the broadIp addr from ioctl() ";
+		    }
+		    leaf NetMask{
+			type string;
+			description "the netMask from ioctl() ";
+		    }
+		    leaf Txbytes{
+			type int64;
+			description "the Txbytes from /proc/dev/net ";
+		    }
+		    leaf Txpackets{
+			type int64;
+			description "the Txpackets from /proc/dev/net ";
+		    }
+		    leaf Txdrop{
+			type int64;
+			description "the Txdrop from /proc/dev/net ";
+		    }
+		    leaf Rxbytes{
+			type int64;
+			description "the Rxbytes from /proc/dev/net ";
+		    }
+		    leaf Rxpackets{
+			type int64;
+			description "the Rxpackets from /proc/dev/net ";
+		    }
+		    leaf Rxdrop{
+			type int64;
+			description "the Rxdrop from /proc/dev/net ";
+		    }
+		}
+	    }
+	    container DiskInfo{
+		config false;
+		description "the disk used statu ,from statfs input path get the partition use statu ,default path is / /home /dev/shm /boot";
+		list Partition{
+		    description "partition infomation";
+		    leaf Path{
+			type string;
+			description "get the partition infomation by this path";
+		    }
+		    leaf Total{
+			type int64;
+			description "the partition total size MB";
+		    }
+		    leaf Free{
+			type int64;
+			description "the partition free size MB";
+		    }
+		}
+	    }
+	    container VMInfo{
+		  config false;
+		  description "collect vm infomation from host.use ps qemu ,if use openstack use virsh";
+		  list VMInfoDetail{
+		      leaf VMName{
+			  type string;
+		      }
+		      leaf VMUUID{
+			  type string;
+		      }
+		      leaf VMMemInfo{
+			  type int32;
+		      }
+		      leaf VMCPUCores{
+			  type int32;
+		      }
+		      leaf VMVNC{
+			  type string;
+		      }
+		      leaf VMPID{
+			  type int32;
+		      }
+		      list VMNetDevInfo{
+			  leaf NetDevIfname{
+			      type string;
+			  }
+			  leaf NetDevID{
+			      type string;
+			  }
+			  leaf NetDevType{
+			      type string;
+			  }
+			  leaf NetDevDeviceMAC{
+			      type string;
+			  }
+			  leaf NetDevDeviceType{
+			      type string;
+			  }
+		      }
+		  }
+	    }
+	    container OVSInfo{
+		config false;
+		description "the ovs-ofctl && ovs-vsctl get the ovs br and port infomation";
+		list OVSBr{
+		    description "ovsbr info contain br-name port list";
+		    leaf BrName{
+			type string;
+			description "the ovs-br name";
+		    }
+		    leaf PortTotalNum{
+			type int32;
+			description "the br total port num";
+		    }
+		    list OVSPortlist{
+			description "ovs port list contain tx rx port name ...";
+			leaf PortName{
+			    type string;
+			}
+			leaf PortSerailNo{
+			    description "portID";
+			    type int32;
+			}
+			leaf MAC{
+			    type string;
+			}
+			leaf Txpackets{
+			    type int64;
+			}
+			leaf Txbytes{
+			    type int64;
+			}
+			leaf Txdrop{
+			    type int64;
+			}
+			leaf Rxpackets{
+			    type int64;
+			}
+			leaf Rxbytes{
+			    type int64;
+			}
+			leaf Rxdrop{
+			    type int64;
+			}
+		    }
+		}
+	    }
+	    container PIDInfo{
+		  config false;
+		  description "collect the qemu ovs dpdk pid info";
+		  container QemuPIDInfo{
+		      list QemuPIDInfoDetail{
+			  leaf QemuProgressName{
+			      type string;
+			  }
+			  list LWPInfo{
+			      leaf LWP{
+				  type int32;
+			      }
+			      leaf PID{
+				  type int32;
+			      }
+			      leaf PSR{
+				  description "the lwp use which logical core ";
+				  type int32;
+			      }
+			  }
+		      }
+		  }
+		  container VSwitchdLWPInfo{
+		      leaf VSwitchdProgressName{
+			    type string;
+		      }
+		      list LWPInfo{
+			  leaf LWP{
+			      type int32;
+			  }
+			  leaf PID{
+			      type int32;
+			  }
+			  leaf PSR{
+			      description "the lwp use which logical core ";
+			      type int32;
+			  }
+		      }
+		  }
+		  container OVSDBLWPInfo{
+		      leaf OVSDBProgressName{
+			    type string;
+		      }
+		      list LWPInfo{
+			  leaf LWP{
+			      type int32;
+			  }
+			  leaf PID{
+			      type int32;
+			  }
+			  leaf PSR{
+			      description "the lwp use which logical core ";
+			      type int32;
+			  }
+		      }
+		  }
+		  container DPDKLWPInfo{
+		      leaf DPDKProgressName{
+			    type string;
+		      }
+		      list LWPInfo{
+			  leaf LWP{
+			      type int32;
+			  }
+			  leaf PID{
+			      type int32;
+			  }
+			  leaf PSR{
+			      description "the lwp use which logical core ";
+			      type int32;
+			  }
+		      }
+		  }		  
+	    }
+	} 
+}
