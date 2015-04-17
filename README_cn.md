@@ -30,6 +30,7 @@ netopeer
 
 ##设计##
 * Hong Tang(chinatelecom.sdn.group@gmail.com)
+* Liang Ou(chinatelecom.sdn.group@gmail.com)
 
 ##实现##
 * Peng li (chinatelecom.sdn.group@gmail.com)

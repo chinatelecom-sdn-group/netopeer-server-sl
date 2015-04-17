@@ -31,6 +31,7 @@ finally restart sshd
 
 ##Design##
 * Hong Tang(chinatelecom.sdn.group@gmail.com)
+* Liang Ou(chinatelecom.sdn.group@gmail.com)
 
 ##Coder##
 * Peng li (chinatelecom.sdn.group@gmail.com)
